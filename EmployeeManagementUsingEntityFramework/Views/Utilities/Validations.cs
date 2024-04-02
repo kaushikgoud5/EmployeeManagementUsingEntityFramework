@@ -20,6 +20,7 @@ namespace EmployeeManagementUsingEntityFramework.Views.Utilities
         }
         public static bool IsEmailValid(string email)
         {
+            if(string.IsNullOrWhiteSpace(email)) return true;
             string pattern = @"^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$";
             if (Regex.IsMatch(email, pattern)) return true;
             return false;

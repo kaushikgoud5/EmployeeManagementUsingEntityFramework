@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using ConsoleTables;
-using EmployeeManagementUsingEntityFramework.Repositories.Interfaces;
+﻿using ConsoleTables;
 using EmployeeManagementUsingEntityFramework.Services.Implementations;
 using EmployeeManagementUsingEntityFramework.Services.Interfaces;
 using EmployeeManagementUsingEntityFramework.Views.Enums;
@@ -15,11 +9,12 @@ namespace EmployeeManagementUsingEntityFramework.Views
     public class RoleManagement
     {
         private readonly IRoleService _roleService;
-        public RoleManagement() {
+        public RoleManagement()
+        {
             _roleService = new RolesService();
-        } 
+        }
         public void RoleFeatures()
-        {   
+        {
             while (true)
             {
                 Console.WriteLine("1.Add Role\n2.Display All\n3.Go Back");
@@ -49,7 +44,7 @@ namespace EmployeeManagementUsingEntityFramework.Views
             Console.Write("Description:");
             string description = Console.ReadLine();
             string location = TakeInput.ValidateInput("Location*", Validations.IsNameValidPattern);
-            rolesService.AddRole(roleName, department, description, location);   
+            rolesService.AddRole(roleName, department, description, location);
         }
         public void DisplayRole(IRoleService rolesService)
         {

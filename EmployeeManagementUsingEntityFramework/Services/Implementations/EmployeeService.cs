@@ -1,11 +1,19 @@
 ﻿using EmployeeManagementUsingEntityFramework.Models;
+using EmployeeManagementUsingEntityFramework.Repositories;
 using EmployeeManagementUsingEntityFramework.Repositories.Implementations;
 using EmployeeManagementUsingEntityFramework.Repositories.Interfaces;
 using EmployeeManagementUsingEntityFramework.Services.Interfaces;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Reflection;
+using System.Text;
+using System.Threading.Tasks;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace EmployeeManagementUsingEntityFramework.Services.Implementations
 {
-    public class EmployeeService : IEmployeeService
+    public class EmployeeService:IEmployeeService
     {
         private readonly IEmployeeRepository _employeeRepositary;
         public EmployeeService()
@@ -22,46 +30,44 @@ namespace EmployeeManagementUsingEntityFramework.Services.Implementations
             _employeeRepositary.Delete(idToBeDeleted);
         }
 
-        public void UpdateEmployee(string idToBeUpdated,
+        public void UpdateEmployee(string idToBeUpdated, 
                                    string firstName,
                                    string lastName,
                                    DateTime dob,
-                                   string email,
+                                   string email, 
                                    long mobile,
                                    DateTime date,
-                                   string location,
-                                   string jobTitle,
-                                   string department,
-                                   string managerName,
+                                   string location, 
+                                   string jobTitle, 
+                                   string department, 
+                                   string managerName, 
                                    string project)
         {
-            var employee = new Employee
-            {
+            var employee = new Employee { 
                 FirstName = firstName,
                 LastName = lastName,
-                DateOfBirth = dob,
+                DateOfBirth = dob, 
                 Email = email,
                 Phone = mobile,
-                JoinDate = date,
-                Location = location,
+                JoinDate = date, 
+                Location = location, 
                 JobTitle = jobTitle,
                 Department = department,
-                Manager = managerName,
-                Project = project
-            };
+                Manager = managerName, 
+                Project = project };
             _employeeRepositary.Update(idToBeUpdated, employee);
         }
-        public void AddEmployee(string empId,
-                                string firstName,
-                                string lastName,
-                                DateTime dob,
+        public void AddEmployee(string empId, 
+                                string firstName, 
+                                string lastName, 
+                                DateTime dob, 
                                 string email,
-                                long mobile,
-                                DateTime date,
-                                string location,
-                                string jobTitle,
-                                string department,
-                                string managerName,
+                                long mobile, 
+                                DateTime date, 
+                                string location, 
+                                string jobTitle, 
+                                string department, 
+                                string managerName, 
                                 string project)
         {
 

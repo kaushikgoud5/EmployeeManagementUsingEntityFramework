@@ -16,7 +16,7 @@ namespace EmployeeManagementUsingEntityFramework.Repositories.Implementations
             using(var context=new EmployeeDbContext())
             {
                 context.Roles.Add(role);
-                context.SaveChanges();  
+                context.SaveChanges();
             }
         }
         public List<Role> Get()

@@ -14,7 +14,7 @@ namespace EmployeeManagementUsingEntityFramework
                 optionsBuilder.UseSqlServer("Data Source=(localdb)\\MSSQLLocalDB;Initial Catalog=employeeDb;Integrated Security=True;Connect Timeout=30;Encrypt=True;Trust Server Certificate=False;Application Intent=ReadWrite;Multi Subnet Failover=False");
             }
         }
-       
+        
     }
 
 }

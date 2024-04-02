@@ -10,6 +10,23 @@ namespace EmployeeManagementUsingEntityFramework.Models
 {
     public class Employee
     {
+       /* public Employee(string empId, string firstName, string lastName, DateTime dob, string email, long mobile, DateTime date, string location, string jobTitle, string department, string managerName, string project)
+        {
+            this.EmpId= empId;  
+            this.FirstName= firstName;
+            this.LastName= lastName;
+            this.Project= project;
+            this.Location= location;    
+            this.JobTitle= jobTitle;
+            this.Department= department;    
+            this.JoinDate = date;   
+            this.Email= email;
+            this.DateOfBirth = dob;
+            this.Manager= managerName;
+            this.Phone = mobile; 
+        }*/
+
+
         [Key]
         public string? EmpId { get; set; }
 
