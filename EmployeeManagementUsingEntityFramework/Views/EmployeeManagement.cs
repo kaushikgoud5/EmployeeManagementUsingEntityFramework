@@ -1,5 +1,7 @@
 ﻿using ConsoleTables;
 using EmployeeManagementUsingEntityFramework.Models;
+using EmployeeManagementUsingEntityFramework.Repositories.Implementations;
+using EmployeeManagementUsingEntityFramework.Repositories.Interfaces;
 using EmployeeManagementUsingEntityFramework.Services.Implementations;
 using EmployeeManagementUsingEntityFramework.Services.Interfaces;
 using EmployeeManagementUsingEntityFramework.Views.Enums;
@@ -10,9 +12,9 @@ namespace EmployeeManagementUsingEntityFramework.Views
     public class EmployeeManagement
     {
         private readonly IEmployeeService _employeeService;
-        public EmployeeManagement()
+        public EmployeeManagement(IEmployeeService employeeService) 
         {
-            _employeeService = new EmployeeService();
+            _employeeService = employeeService;
         }
 
         public void EmployeeFeatures()
@@ -20,8 +22,7 @@ namespace EmployeeManagementUsingEntityFramework.Views
             while (true)
             {
                 Console.WriteLine("\n1.Add Employee\n2.Display All\n3.Display One\n4.Edit Employee\n5.Delete Employee\n6.Go Back\n");
-                try
-                {
+              
                     int empManagementMenu = Convert.ToInt32(Console.ReadLine());
                     switch (empManagementMenu)
                     {
@@ -45,12 +46,9 @@ namespace EmployeeManagementUsingEntityFramework.Views
                         default:
                             Console.WriteLine("You have Entered An Invalid Option");
                             break;
-                    }
+                    
                 }
-                catch (Exception ex)
-                {
-                    Console.WriteLine(ex.Message);
-                }
+              
 
             }
         }
@@ -61,47 +59,40 @@ namespace EmployeeManagementUsingEntityFramework.Views
             string empId = TakeInput.ValidateInput("Employee Number", Validations.IsIdValidPattern);
             while (!Validations.IsIdUnique(empId, _employeeService))
             {
+                Console.ForegroundColor=ConsoleColor.Red;
                 Console.WriteLine("ID Should be unique");
+                Console.ForegroundColor=ConsoleColor.White;
                 Console.Write("Enter Employee Number*:");
                 empId = Console.ReadLine();
                 Validations.IsIdUnique(empId, _employeeService);
             }
             string firstName = TakeInput.ValidateInput("First Name*", Validations.IsNameValidPattern);
             string lastName = TakeInput.ValidateInput("Last Name*", Validations.IsNameValidPattern);
-            string email = TakeInput.ValidateInput("Email", Validations.IsEmailValid);
-            DateTime dob = TakeInput.ValidateDateInput("Date of Birth(DD/MM/YYYY format)");
+            string email = TakeInput.ValidateInput("Email*", Validations.IsEmailValid);
+            DateTime? dob = TakeInput.ValidateDateInput("Date of Birth(DD/MM/YYYY format)");
             string location = TakeInput.ValidateInput("Location*", Validations.IsNameValidPattern);
             string jobTitle = TakeInput.ValidateInput("Job Title*", Validations.IsNameValidPattern);
-            long mobile = TakeInput.ValidateMobileInput("Enter Mobile Number");
+            long? mobile = TakeInput.ValidateMobileInput("Enter Mobile Number");
             string department = TakeInput.SelectFromMenu("Choose Departments*", new StaticData().departments);
-            Console.Write("Enter Manager Name:");
-            string managerName = Console.ReadLine();
-            DateTime joinDate = TakeInput.ValidateDateInput("Joining Date*(DD/MM/YYYY format)");
+            string managerName = TakeInput.ValidateInput("Manager Name*", Validations.IsNameManagerValidPattern);
+            DateTime? joinDate = TakeInput.ValidateJoinDateInput("Joining Date*(DD/MM/YYYY format)");
             string project = TakeInput.SelectFromMenu("Choose Projects*:", new StaticData().projects);
-           /* var employee = new Employee(empId,
-                                         firstName,
-                                         lastName,
-                                         dob,
-                                         email,
-                                         mobile,
-                                         joinDate,
-                                         location,
-                                         jobTitle,
-                                         department,
-                                         managerName,
-                                         project);*/
-            _employeeService.AddEmployee(empId, 
-                                         firstName, 
-                                         lastName, 
-                                         dob, 
-                                         email,
-                                         mobile, 
-                                         joinDate, 
-                                         location, 
-                                         jobTitle, 
-                                         department,
-                                         managerName,
-                                         project);
+            var employee = new Employee()
+                                             {
+                                                EmpId= empId,
+                                                FirstName = firstName,
+                                                LastName = lastName,
+                                                DateOfBirth = dob,
+                                                Email = email,
+                                                Phone = mobile,
+                                                JoinDate = joinDate,
+                                                Location = location,
+                                                JobTitle = jobTitle,
+                                                Department = department,
+                                                Manager = managerName,
+                                                Project = project
+                                            };
+            _employeeService.AddEmployee(employee);
             Console.WriteLine("Employee Added Successfully!!");
 
         }
@@ -113,7 +104,7 @@ namespace EmployeeManagementUsingEntityFramework.Views
             _employeeService.GetEmployees().ForEach(emp =>
             {
 
-                table.AddRow(emp.EmpId, emp.FirstName + " " + emp.LastName, emp.Department, emp.Location, emp.JoinDate.ToString().Substring(0, 10), emp.Manager, emp.Project);
+                table.AddRow(emp.EmpId, emp.FirstName + " " + emp.LastName, emp.Department, emp.Location,emp.JoinDate.ToString().Substring(0,10), emp.Manager, emp.Project);
             }
 
             );
@@ -168,27 +159,30 @@ namespace EmployeeManagementUsingEntityFramework.Views
                     string firstName = TakeInput.ValidateInput("First Name*", Validations.IsNameValidPattern);
                     string lastName = TakeInput.ValidateInput("Last Name*", Validations.IsNameValidPattern);
                     string email = TakeInput.ValidateInput("Email", Validations.IsEmailValid);
-                    DateTime dob = TakeInput.ValidateDateInput("Date of Birth(DD/MM/YYYY format)");
+                    DateTime? dob = TakeInput.ValidateDateInput("Date of Birth(DD/MM/YYYY format)");
                     string location = TakeInput.ValidateInput("Location*", Validations.IsNameValidPattern);
                     string jobTitle = TakeInput.ValidateInput("Job Title*", Validations.IsNameValidPattern);
-                    long mobile = TakeInput.ValidateMobileInput("Enter Mobile Number");
+                    long? mobile = TakeInput.ValidateMobileInput("Enter Mobile Number");
                     string department = TakeInput.SelectFromMenu("Choose Departments*", new StaticData().departments);
                     Console.Write("Enter Manager Name");
                     string managerName = Console.ReadLine();
-                    DateTime joinDate = TakeInput.ValidateDateInput("Joining Date(DD/MM/YYYY format)");
+                    DateTime? joinDate = TakeInput.ValidateJoinDateInput("Joining Date(DD/MM/YYYY format)*");
                     string project = TakeInput.SelectFromMenu("Choose Projects:", new StaticData().projects);
-                    _employeeService.UpdateEmployee(idToBeUpdated,
-                                                    firstName,
-                                                    lastName,
-                                                    dob,
-                                                    email,
-                                                    mobile,
-                                                    joinDate,
-                                                    location,
-                                                    jobTitle,
-                                                    department,
-                                                    managerName,
-                                                    project);
+                    var employee = new Employee()
+                    {
+                        FirstName = firstName,
+                        LastName = lastName,
+                        DateOfBirth = dob,
+                        Email = email,
+                        Phone = mobile,
+                        JoinDate = joinDate,
+                        Location = location,
+                        JobTitle = jobTitle,
+                        Department = department,
+                        Manager = managerName,
+                        Project = project
+                    };
+                    _employeeService.UpdateEmployee(idToBeUpdated,employee);
 
                 }
             });

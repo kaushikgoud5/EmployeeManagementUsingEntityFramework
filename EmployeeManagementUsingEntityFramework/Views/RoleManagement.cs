@@ -9,9 +9,9 @@ namespace EmployeeManagementUsingEntityFramework.Views
     public class RoleManagement
     {
         private readonly IRoleService _roleService;
-        public RoleManagement()
+        public RoleManagement(IRoleService roleService)
         {
-            _roleService = new RolesService();
+            _roleService = roleService;
         }
         public void RoleFeatures()
         {
@@ -22,10 +22,10 @@ namespace EmployeeManagementUsingEntityFramework.Views
                 switch (roleManagementMenu)
                 {
                     case (int)RoleEnum.AddRole:
-                        AddRole(_roleService);
+                        AddRole();
                         break;
                     case (int)RoleEnum.DisplayRole:
-                        DisplayRole(_roleService);
+                        DisplayRole();
                         break;
                     case (int)RoleEnum.GoBack:
                         Console.WriteLine("Go Back");
@@ -37,20 +37,20 @@ namespace EmployeeManagementUsingEntityFramework.Views
 
 
         }
-        public void AddRole(IRoleService rolesService)
+        public void AddRole()
         {
             string roleName = TakeInput.ValidateInput("Role Name*", Validations.IsNameValidPattern);
             string department = TakeInput.ValidateInput("Department*", Validations.IsNameValidPattern);
             Console.Write("Description:");
             string description = Console.ReadLine();
             string location = TakeInput.ValidateInput("Location*", Validations.IsNameValidPattern);
-            rolesService.AddRole(roleName, department, description, location);
+            _roleService.AddRole(roleName, department, description, location);
         }
-        public void DisplayRole(IRoleService rolesService)
+        public void DisplayRole()
         {
             Console.WriteLine("Displaying All Roles");
             var table = new ConsoleTable("Name", "Description", "Department", "Location");
-            rolesService.GetRoles().ForEach(roles =>
+            _roleService.GetRoles().ForEach(roles =>
             {
                 table.AddRow(roles.Name, roles.Description, roles.Description, roles.Location);
             });

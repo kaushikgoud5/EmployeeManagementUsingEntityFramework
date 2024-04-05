@@ -16,9 +16,9 @@ namespace EmployeeManagementUsingEntityFramework.Services.Implementations
     public class EmployeeService:IEmployeeService
     {
         private readonly IEmployeeRepository _employeeRepositary;
-        public EmployeeService()
+        public EmployeeService(IEmployeeRepository employeeRepository)
         {
-            _employeeRepositary = new EmployeeRepository();
+            _employeeRepositary = employeeRepository;
         }
         public List<Employee> GetEmployees()
         {
@@ -30,62 +30,13 @@ namespace EmployeeManagementUsingEntityFramework.Services.Implementations
             _employeeRepositary.Delete(idToBeDeleted);
         }
 
-        public void UpdateEmployee(string idToBeUpdated, 
-                                   string firstName,
-                                   string lastName,
-                                   DateTime dob,
-                                   string email, 
-                                   long mobile,
-                                   DateTime date,
-                                   string location, 
-                                   string jobTitle, 
-                                   string department, 
-                                   string managerName, 
-                                   string project)
-        {
-            var employee = new Employee { 
-                FirstName = firstName,
-                LastName = lastName,
-                DateOfBirth = dob, 
-                Email = email,
-                Phone = mobile,
-                JoinDate = date, 
-                Location = location, 
-                JobTitle = jobTitle,
-                Department = department,
-                Manager = managerName, 
-                Project = project };
-            _employeeRepositary.Update(idToBeUpdated, employee);
-        }
-        public void AddEmployee(string empId, 
-                                string firstName, 
-                                string lastName, 
-                                DateTime dob, 
-                                string email,
-                                long mobile, 
-                                DateTime date, 
-                                string location, 
-                                string jobTitle, 
-                                string department, 
-                                string managerName, 
-                                string project)
+        public void UpdateEmployee(string id,Employee employee)
         {
 
-            var employee = new Employee
-            {
-                EmpId = empId,
-                FirstName = firstName,
-                LastName = lastName,
-                DateOfBirth = dob,
-                Email = email,
-                Phone = mobile,
-                JoinDate = date,
-                Location = location,
-                JobTitle = jobTitle,
-                Department = department,
-                Manager = managerName,
-                Project = project
-            };
+            _employeeRepositary.Update(id,employee);
+        }
+        public void AddEmployee(Employee employee)
+        {
             _employeeRepositary.Add(employee);
         }
     }

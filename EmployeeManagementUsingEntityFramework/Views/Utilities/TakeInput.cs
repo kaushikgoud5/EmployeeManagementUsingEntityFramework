@@ -24,33 +24,70 @@ namespace EmployeeManagementUsingEntityFramework.Views.Utilities
             return input;
 
         }
-        public static DateTime ValidateDateInput(string prompt)
+        public static DateTime? ValidateDateInput(string prompt)
         {
-            string input;
-            DateTime date;
+            while (true) {
+
+                DateTime date;
             Console.Write($"Enter {prompt}:");
-            input = Console.ReadLine();
-            while (!DateTime.TryParseExact(input, "d/M/yyyy", null, System.Globalization.DateTimeStyles.None, out date))
-            {
-                Console.WriteLine($"Invalid {prompt}");
-                Console.Write($"Enter {prompt}:");
-                input = Console.ReadLine();
-            }
+           string input = Console.ReadLine();
+                if (string.IsNullOrWhiteSpace(input)) { return null; }
+                while (!DateTime.TryParseExact(input, "d/M/yyyy", null, System.Globalization.DateTimeStyles.None, out  date))
+                {
+                    if (string.IsNullOrWhiteSpace(input)) { return null; }
+                    Console.ForegroundColor = ConsoleColor.Red;
+                    Console.WriteLine($"Invalid {prompt}");
+                    Console.ForegroundColor = ConsoleColor.White;
+                    Console.Write($"Enter {prompt}:");
+                    input = Console.ReadLine();
+                }
 
             return date;
+            }
+            
         }
-        public static long ValidateMobileInput(string prompt)
+        public static DateTime? ValidateJoinDateInput(string prompt)
         {
-            long mobile;
-
-            Console.Write($"{prompt}:");
-            while (!long.TryParse(Console.ReadLine(), out mobile) || mobile.ToString().Length != 10)
+            while (true)
             {
-                Console.WriteLine($"Invalid {prompt}");
-                Console.Write($"{prompt}:");
+                DateTime date;
+                Console.Write($"Enter {prompt}:");
+                string input = Console.ReadLine();
+              
+                while (!DateTime.TryParseExact(input, "d/M/yyyy", null, System.Globalization.DateTimeStyles.None, out date))
+                {
+                    Console.ForegroundColor = ConsoleColor.Red;
+                    Console.WriteLine($"Invalid {prompt}");
+                    Console.ForegroundColor = ConsoleColor.White;
+                    Console.Write($"Enter {prompt}:");
+                    input = Console.ReadLine();
+                }
+
+                return date;
+            }
+
+        }
+        public static long? ValidateMobileInput(string prompt)
+        {
+            while(true)
+            {
+            long mobile;
+            Console.Write($"{prompt}:");
+            string input = Console.ReadLine();
+            if(string.IsNullOrWhiteSpace(input)) { return null; }
+            while (!long.TryParse(input, out mobile) || mobile.ToString().Length != 10)
+            {
+                    if (string.IsNullOrWhiteSpace(input)) { return null; }
+                    Console.ForegroundColor = ConsoleColor.Red;
+                    Console.WriteLine($"Invalid {prompt}");
+                    Console.ForegroundColor = ConsoleColor.White;
+                    Console.Write($"{prompt}:");
+                    input = Console.ReadLine();
             }
 
             return mobile;
+            }
+           
         }
         public static string SelectFromMenu(string prompt, List<string> options)
         {
@@ -64,7 +101,9 @@ namespace EmployeeManagementUsingEntityFramework.Views.Utilities
 
             while (!int.TryParse(Console.ReadLine(), out choice) || choice < 1 || choice > options.Count)
             {
+                Console.ForegroundColor = ConsoleColor.Red;
                 Console.WriteLine("Invalid choice. Please choose an option from the menu.");
+                Console.ForegroundColor = ConsoleColor.White;
                 Console.Write("Choose an option:");
             }
 

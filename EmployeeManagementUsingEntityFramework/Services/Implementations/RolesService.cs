@@ -14,9 +14,9 @@ namespace EmployeeManagementUsingEntityFramework.Services.Implementations
     public class RolesService:IRoleService
     {
         private readonly IRoleRepository _roleRepositary;
-        public RolesService()
+        public RolesService(IRoleRepository roleRepository)
         {
-            _roleRepositary = new RoleRepository();
+            _roleRepositary = roleRepository;
         }
 
         public void AddRole(string roleName, string department, string description, string location)

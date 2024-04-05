@@ -8,7 +8,7 @@ namespace EmployeeManagementUsingEntityFramework.Views.Utilities
     {
         public static bool IsIdValidPattern(string empId)
         {
-            string pattern = @"^TZ\d{1,4}$";
+            string pattern = @"^TZ\d{4}$";
             if (Regex.IsMatch(empId, pattern)) return true;
             return false;
         }
@@ -18,9 +18,16 @@ namespace EmployeeManagementUsingEntityFramework.Views.Utilities
             if (Regex.IsMatch(name, pattern)) return true;
             return false;
         }
+        public static bool IsNameManagerValidPattern(string name)
+        {
+            if(string.IsNullOrWhiteSpace(name)) return true; 
+            string pattern = @"[a-zA-Z]+$";
+            if (Regex.IsMatch(name, pattern)) return true;
+            return false;
+        }
         public static bool IsEmailValid(string email)
         {
-            if(string.IsNullOrWhiteSpace(email)) return true;
+      
             string pattern = @"^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$";
             if (Regex.IsMatch(email, pattern)) return true;
             return false;

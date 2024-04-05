@@ -11,22 +11,20 @@ namespace EmployeeManagementUsingEntityFramework.Repositories.Implementations
 {
     public class RoleRepository : IRoleRepository
     {
+        private readonly EmployeeDbContext context;
+        public RoleRepository(EmployeeDbContext employeeDbContext)
+        {
+            context = employeeDbContext;
+        }
         public void AddRole(Role role)
         {
-            using(var context=new EmployeeDbContext())
-            {
-                context.Roles.Add(role);
-                context.SaveChanges();
-            }
+            context.Roles.Add(role);
+            context.SaveChanges();    
         }
         public List<Role> Get()
         {
-            var roles = new List<Role>();
-            using (var context = new EmployeeDbContext())
-            {
-                roles =context.Roles.ToList();
-            }
-            return roles;
+           var roles =context.Roles.ToList();
+           return roles;
 
         }
     }
